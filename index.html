@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>Tracker Hub</title>
+    <script>
+      // Aplica el tema elegido antes de pintar (evita el parpadeo claro→oscuro).
+      try {
+        var t = JSON.parse(localStorage.getItem('tracker.theme'));
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
     <meta name="description" content="Hábitos, ánimo, perros y agenda de la casa." />
     <meta name="theme-color" content="#F5EFE6" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#1C1814" media="(prefers-color-scheme: dark)" />

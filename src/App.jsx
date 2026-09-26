@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { AppCtx } from './lib/appctx.js';
 import { DataProvider, ToastProvider, useData } from './lib/data.jsx';
 import { addDays, fmtDayLong, fmtDayShort, range, todayISO } from './lib/dates.js';
-import { Segmented } from './components/ui.jsx';
+import { Segmented, ThemeSwitch } from './components/ui.jsx';
+import { useTheme } from './lib/theme.js';
 import Today from './views/Today.jsx';
 import Habits from './views/Habits.jsx';
 import Wellbeing from './views/Wellbeing.jsx';
@@ -86,6 +87,7 @@ function Shell() {
   const [person, setPerson] = usePersisted('tracker.person', 'santi');
   const [period, setPeriod] = usePersisted('tracker.period', 30);
   const [tabId, go] = useHashTab();
+  const [theme, setTheme] = useTheme();
   const now = useNow();
   const today = todayISO(new Date(now));
 
@@ -133,6 +135,7 @@ function Shell() {
               <span className="live-dot" aria-hidden="true" />
               {live ? 'En vivo' : 'Sin conexión en vivo'}
             </span>
+            <ThemeSwitch value={theme} onChange={setTheme} />
             <Segmented label="Quién está usando la app" options={personOptions} value={person} onChange={setPerson} />
           </div>
         </header>

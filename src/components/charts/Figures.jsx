@@ -7,7 +7,9 @@ import { fmt2 } from '../../lib/format.js';
  */
 export function StatTile({ label, value, unit, delta, deltaLabel = 'vs período anterior', better = 'up', sub, icon }) {
   let tone = 'neutral';
-  if (delta != null && better && Math.abs(delta.value) > 1e-9) {
+  // Si la diferencia redondeada es cero ("±0,0"), no se pinta ni se marca dirección.
+  const flat = delta != null && (Math.abs(delta.value) < 1e-9 || String(delta.text).startsWith('±'));
+  if (delta != null && better && !flat) {
     const up = delta.value > 0;
     tone = (up && better === 'up') || (!up && better === 'down') ? 'good' : 'bad';
   }
@@ -23,7 +25,7 @@ export function StatTile({ label, value, unit, delta, deltaLabel = 'vs período 
       </div>
       {delta ? (
         <div className={`stat-delta ${tone}`}>
-          <span aria-hidden="true">{delta.value > 0 ? '▲' : delta.value < 0 ? '▼' : '●'}</span> {delta.text}{' '}
+          <span aria-hidden="true">{flat ? '●' : delta.value > 0 ? '▲' : '▼'}</span> {delta.text}{' '}
           <span className="muted">{deltaLabel}</span>
         </div>
       ) : null}
